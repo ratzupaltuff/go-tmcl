@@ -1,4 +1,4 @@
-module git.rrdc.de/rr/customer
+module github.com/raceresult/go-tmcl
 
 go 1.16
 
