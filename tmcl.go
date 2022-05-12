@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-
 	"github.com/tarm/serial"
 )
 
@@ -108,16 +107,23 @@ func (q *TMCL) Exec(cmd byte, typeNo byte, motorOrBank byte, value int) (int, er
 			time.Sleep(time.Millisecond)
 			continue
 		}
+
+		// check checksum
 		if buf[8] != calcChecksum(buf[:8]) {
 			return 0, errors.New("checksum invalid")
 		}
+
+		// check status code
 		if buf[2] != 100 {
 			return 0, errors.New("board returned error code " + strconv.Itoa(int(buf[2])))
 		}
+
+		// return result
 		return int(binary.BigEndian.Uint32(buf[4:8])), nil
 	}
 }
 
+// calcChecksum calculates the checksum by adding up all bytes
 func calcChecksum(bts []byte) byte {
 	var x byte
 	for _, b := range bts {
