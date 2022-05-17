@@ -73,12 +73,12 @@ func (q *TMCL) RSGP(index byte, bank byte) (int, error) {
 }
 
 // SIO is set io
-func (q *TMCL) SIO(port byte, value bool) error {
+func (q *TMCL) SIO(port byte, bank byte, value bool) error {
 	var b int
 	if value {
 		b = 1
 	}
-	_, err := q.Exec(14, port, 2, b)
+	_, err := q.Exec(14, port, bank, b)
 	return err
 }
 
